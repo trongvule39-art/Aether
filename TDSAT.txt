@@ -1,0 +1,165 @@
+-- =========================================================================
+-- CẤU HÌNH LINK CHỨA KEY VÀ LINK SCRIPT CHÍNH CỦA BẠN
+-- =========================================================================
+local KEY_URL = "https://raw.githubusercontent.com/trongvule39-art/key/refs/heads/main/key.txt"
+local GET_KEY_LINK = "https://cuongbokit.blogspot.com/p/bam-vao-day-ngyouu.html?name=Key%20là%20:%20TrongVuHub_Freekey_2026&content=TrongVuHub_Freekey_2026"
+-- =========================================================================
+
+-- Xóa GUI cũ nếu có để tránh trùng lặp
+if game:GetService("CoreGui"):FindFirstChild("TrongVuKeySystem") then
+    game:GetService("CoreGui"):FindFirstChild("TrongVuKeySystem"):Destroy()
+end
+
+-- Khởi tạo Giao Diện (GUI)
+local ScreenGui = Instance.new("ScreenGui")
+local MainFrame = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local CloseBtn = Instance.new("TextButton") -- Nút X đóng bảng
+local TextBox = Instance.new("TextBox")
+local CheckBtn = Instance.new("TextButton")
+local GetKeyBtn = Instance.new("TextButton")
+local UICorner = Instance.new("UICorner")
+local UICorner2 = Instance.new("UICorner")
+local UICorner3 = Instance.new("UICorner")
+local UICorner4 = Instance.new("UICorner")
+
+ScreenGui.Name = "TrongVuKeySystem"
+ScreenGui.Parent = game:GetService("CoreGui")
+ScreenGui.ResetOnSpawn = false
+
+MainFrame.Name = "MainFrame"
+MainFrame.Parent = ScreenGui
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 35)
+MainFrame.Position = UDim2.new(0.5, -175, 0.5, -100)
+MainFrame.Size = UDim2.new(0, 350, 0, 200)
+MainFrame.Active = true
+MainFrame.Draggable = true
+
+UICorner.Parent = MainFrame
+
+Title.Name = "Title"
+Title.Parent = MainFrame
+Title.BackgroundTransparency = 1
+Title.Position = UDim2.new(0, 15, 0, 10)
+Title.Size = UDim2.new(0, 290, 0, 30)
+Title.Font = Enum.Font.SourceSansBold
+Title.Text = "TRỌNG VŨ X NHẬT BÉO MARCOS - VERIFICATION"
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.TextSize = 15
+Title.TextXAlignment = Enum.TextXAlignment.Left
+
+-- Cấu hình nút Đóng "X"
+CloseBtn.Name = "CloseBtn"
+CloseBtn.Parent = MainFrame
+CloseBtn.BackgroundTransparency = 1
+CloseBtn.Position = UDim2.new(1, -35, 0, 10)
+CloseBtn.Size = UDim2.new(0, 25, 0, 25)
+CloseBtn.Font = Enum.Font.SourceSansBold
+CloseBtn.Text = "X"
+CloseBtn.TextColor3 = Color3.fromRGB(220, 60, 60)
+CloseBtn.TextSize = 18
+
+CloseBtn.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+TextBox.Parent = MainFrame
+TextBox.BackgroundColor3 = Color3.fromRGB(45, 45, 50)
+TextBox.Position = UDim2.new(0.1, 0, 0.35, 0)
+TextBox.Size = UDim2.new(0.8, 0, 0, 35)
+TextBox.Font = Enum.Font.SourceSans
+TextBox.PlaceholderText = "Nhập Key vào đây..."
+TextBox.Text = ""
+TextBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.TextSize = 16
+
+UICorner2.Parent = TextBox
+
+CheckBtn.Name = "CheckBtn"
+CheckBtn.Parent = MainFrame
+CheckBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 70)
+CheckBtn.Position = UDim2.new(0.1, 0, 0.65, 0)
+CheckBtn.Size = UDim2.new(0.38, 0, 0, 40)
+CheckBtn.Font = Enum.Font.SourceSansBold
+CheckBtn.Text = "Check Key"
+CheckBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+CheckBtn.TextSize = 16
+
+UICorner3.Parent = CheckBtn
+
+GetKeyBtn.Name = "GetKeyBtn"
+GetKeyBtn.Parent = MainFrame
+GetKeyBtn.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
+GetKeyBtn.Position = UDim2.new(0.52, 0, 0.65, 0)
+GetKeyBtn.Size = UDim2.new(0.38, 0, 0, 40)
+GetKeyBtn.Font = Enum.Font.SourceSansBold
+GetKeyBtn.Text = "Get Key"
+GetKeyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+GetKeyBtn.TextSize = 16
+
+UICorner4.Parent = GetKeyBtn
+
+-- Xử lý sự kiện nút Get Key
+GetKeyBtn.MouseButton1Click:Connect(function()
+    if setclipboard then
+        setclipboard(GET_KEY_LINK)
+        GetKeyBtn.Text = "Đã Copy Link!"
+        task.wait(1.5)
+        GetKeyBtn.Text = "Get Key"
+    end
+end)
+
+-- Xử lý kiểm tra Key trực tiếp
+CheckBtn.MouseButton1Click:Connect(function()
+    local success, currentKey = pcall(function()
+        return game:HttpGet(KEY_URL):gsub("%s+", "")
+    end)
+    
+    if not success or not currentKey then
+        CheckBtn.Text = "LỖI KẾT NỐI SERVER!"
+        CheckBtn.BackgroundColor3 = Color3.fromRGB(200, 100, 0)
+        task.wait(1.5)
+        CheckBtn.Text = "Check Key"
+        CheckBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 70)
+        return
+    end
+
+    if TextBox.Text == currentKey then
+        local savedKey = TextBox.Text
+        
+        CheckBtn.Text = "KEY ĐÚNG! ĐANG TẢI..."
+        CheckBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 100)
+        
+        task.wait(1)
+        ScreenGui:Destroy() -- Xóa bảng nhập key đi
+        
+        task.spawn(function()
+            -- ĐÃ CẬP NHẬT TẢI SCRIPT AUTO-STRAT THEO YÊU CẦU CỦA BẠN
+            pcall(function()
+                loadstring(game:HttpGet("https://raw.githubusercontent.com/DuxiiT/auto-strat/refs/heads/main/Library.lua"))()
+            end)
+        end)
+
+        -- Vòng lặp quét ngầm thời gian thực (Cứ mỗi 10 giây quét một lần)
+        task.spawn(function()
+            while true do
+                task.wait(10)
+                local reCheck, latestKey = pcall(function()
+                    return game:HttpGet(KEY_URL):gsub("%s+", "")
+                end)
+                
+                if reCheck and latestKey ~= savedKey then
+                    game.Players.LocalPlayer:Kick("TrongVu Hub: Key đã bị thay đổi hoặc hết hạn! Vui lòng mở lại script và get key mới.")
+                    break
+                end
+            end
+        end)
+        
+    else
+        CheckBtn.Text = "SAI KEY! THỬ LẠI"
+        CheckBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+        task.wait(1.5)
+        CheckBtn.Text = "Check Key"
+        CheckBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 70)
+    end
+end)
